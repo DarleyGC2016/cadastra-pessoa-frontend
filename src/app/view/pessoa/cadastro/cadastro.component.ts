@@ -1,23 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import { MyErrorStateMatcher } from './my.error.state.matcher';
+
 import {
   FormControl,
-  FormGroupDirective,
-  NgForm,
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  FormBuilder,
+  FormGroup
 } from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import { CadastroService } from './cadastro.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -25,14 +20,40 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   imports: [FormsModule, 
             MatFormFieldModule,
             MatInputModule,
-            ReactiveFormsModule],
+            ReactiveFormsModule,
+            MatButtonModule],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
 
 
-export class CadastroComponent {
+export class CadastroComponent implements OnInit{
+  public pessoaForm: any;
+  
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
 
   matcher = new MyErrorStateMatcher();
+
+  constructor(private fb: FormBuilder,
+              private service: CadastroService){
+  }
+
+  ngOnInit(): void {
+    this.pessoaForm = this.fb.group({
+      nome: ['', Validators.required],
+      email: ['', Validators.required],
+      senha: ['', Validators.required],
+      confirmarSenha: ['', Validators.required]
+    })
+    
+  }
+
+  validaConfimacaoSenha():boolean{
+    return this.pessoaForm.value.confirmarSenha === this.pessoaForm.value.senha
+  }
+  enviarDados():void{
+    
+    this.service.salvarPessoa(this.pessoaForm.value).subscribe(()=>{});
+  }
+
 }
