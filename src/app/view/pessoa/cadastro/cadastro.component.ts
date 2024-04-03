@@ -3,6 +3,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import { MyErrorStateMatcher } from './my.error.state.matcher';
+import {MatCardModule} from '@angular/material/card';
+import { catchError, Observable, of } from 'rxjs';
 
 import {
   FormControl,
@@ -12,6 +14,7 @@ import {
   FormBuilder,
   FormGroup
 } from '@angular/forms';
+
 import { CadastroService } from './cadastro.service';
 
 @Component({
@@ -21,7 +24,9 @@ import { CadastroService } from './cadastro.service';
             MatFormFieldModule,
             MatInputModule,
             ReactiveFormsModule,
-            MatButtonModule],
+            MatButtonModule,
+            MatButtonModule,
+            MatCardModule],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
@@ -29,13 +34,12 @@ import { CadastroService } from './cadastro.service';
 
 export class CadastroComponent implements OnInit{
   public pessoaForm: any;
-  
-  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-
+  errado:boolean = true ;
   matcher = new MyErrorStateMatcher();
 
   constructor(private fb: FormBuilder,
               private service: CadastroService){
+                
   }
 
   ngOnInit(): void {
@@ -45,15 +49,23 @@ export class CadastroComponent implements OnInit{
       senha: ['', Validators.required],
       confirmarSenha: ['', Validators.required]
     })
-    
+    this.verificarServidor();
   }
 
-  validaConfimacaoSenha():boolean{
-    return this.pessoaForm.value.confirmarSenha === this.pessoaForm.value.senha
+  verificarServidor():void{
+    this.service.salvarPessoa(this.pessoaForm.value)
+    .pipe(
+            catchError(error =>{              
+              this.errado = error.ok
+               return of([])  
+            })
+          ).subscribe((obj)=>obj);
   }
+
   enviarDados():void{
     
-    this.service.salvarPessoa(this.pessoaForm.value).subscribe(()=>{});
+    this.service.salvarPessoa(this.pessoaForm.value).subscribe(obj=> obj);
+    window.location.reload();
   }
 
 }

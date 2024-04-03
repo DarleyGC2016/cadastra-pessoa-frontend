@@ -12,6 +12,6 @@ export class CadastroService {
   constructor(private httpClient: HttpClient) { }
 
   salvarPessoa(pessoa: any): Observable<Pessoa>{
-    return this.httpClient.post<Pessoa>('http://localhost:8080/cadastro/new', pessoa);
+    return this.httpClient.post<Pessoa>(`${this.url}/cadastro/new`, pessoa);
   }
 }

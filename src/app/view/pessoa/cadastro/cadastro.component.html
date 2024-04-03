@@ -1,4 +1,12 @@
 <form class="example-form" [formGroup]="pessoaForm">
+  @if (!errado) {   
+    <mat-card>
+      <mat-card-content>
+          <mat-error>Servidor fora do ar. Estamos em manutenção!!</mat-error>
+      </mat-card-content>
+    </mat-card>
+  }
+  @else {
     <mat-form-field class="example-full-width">
       <mat-label>Nome</mat-label>
         <input type="text" matInput formControlName="nome"  [errorStateMatcher]="matcher" placeholder="Nome" minlength="3" maxlength="50">
@@ -14,8 +22,8 @@
     <mat-form-field class="example-full-width">
       <mat-label>Confirmar Senha</mat-label>
         <input type="password" matInput name="confirmarSenha" formControlName="confirmarSenha"
-          [errorStateMatcher]="matcher" placeholder="Confirmar Senha">
-        @if (pessoaForm.value.confirmarSenha === pessoaForm.value.senha) {
+          [errorStateMatcher]="matcher" placeholder="Confirmar Senha">        
+        @if (pessoaForm.value.confirmarSenha != pessoaForm.value.senha) {
           <mat-error>Não corresponde com a senha!!</mat-error>
         }
     </mat-form-field>
@@ -27,7 +35,11 @@
         <mat-error>Please enter a valid email address</mat-error>
       }
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="enviarDados()">Enviar</button>
-    <div class="example-button-row"></div>
+    <div class="example-button-row">
+      <button mat-raised-button color="primary"
+              (click)="enviarDados()"
+              [disabled]="pessoaForm.status === 'INVALID'">Enviar</button>
+    </div>
+  }
   </form>
   
