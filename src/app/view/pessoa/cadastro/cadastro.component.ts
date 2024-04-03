@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import { MyErrorStateMatcher } from './my.error.state.matcher';
+import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import { MyErrorStateMatcher } from './my.error.state.matcher';
 import {MatCardModule} from '@angular/material/card';
@@ -11,7 +15,11 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   FormGroup
+  FormBuilder,
+  FormGroup
 } from '@angular/forms';
+import { CadastroService } from './cadastro.service';
+import { catchError, Observable, of } from 'rxjs';
 import { CadastroService } from './cadastro.service';
 import { catchError, Observable, of } from 'rxjs';
 
@@ -24,11 +32,17 @@ import { catchError, Observable, of } from 'rxjs';
             ReactiveFormsModule,
             MatButtonModule,
             MatCardModule],
+            ReactiveFormsModule,
+            MatButtonModule,
+            MatCardModule],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
 
 
+export class CadastroComponent implements OnInit{
+  public pessoaForm: any;
+  errado:boolean = true ;
 export class CadastroComponent implements OnInit{
   public pessoaForm: any;
   errado:boolean = true ;
