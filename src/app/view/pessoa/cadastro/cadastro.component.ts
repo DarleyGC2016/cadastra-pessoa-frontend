@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 
 import { CadastroService } from './cadastro.service';
+import { Pessoa } from '../../../shared/model/pessoa.model';
 
 @Component({
   selector: 'app-cadastro',
@@ -33,38 +34,39 @@ import { CadastroService } from './cadastro.service';
 
 
 export class CadastroComponent implements OnInit{
-  public pessoaForm: any;
-  errado:boolean = true ;
+  pessoaForm: any;
+  pessoas:Pessoa[] = []
+  errado:boolean = false ;
+  mensagem: string = '';
   matcher = new MyErrorStateMatcher();
 
   constructor(private fb: FormBuilder,
               private service: CadastroService){
-                
+                this.verificarServidor();          
   }
 
   ngOnInit(): void {
-    this.pessoaForm = this.fb.group({
-      nome: ['', Validators.required],
-      email: ['', Validators.required],
-      senha: ['', Validators.required],
-      confirmarSenha: ['', Validators.required]
-    })
-    this.verificarServidor();
+      this.pessoaForm = this.fb.group({
+        nome: ['', Validators.required],
+        email: ['', Validators.required],
+        senha: ['', Validators.required],
+        confirmarSenha: ['', Validators.required]
+      });
   }
 
   verificarServidor():void{
-    this.service.salvarPessoa(this.pessoaForm.value)
+    this.service.verificaConexao()
     .pipe(
-            catchError(error =>{              
-              this.errado = error.ok
-               return of([])  
-            })
-          ).subscribe((obj)=>obj);
+            catchError(error => error)
+          ).subscribe((obj)=> {
+            this.errado = true;
+            this.mensagem = obj
+          });
   }
 
   enviarDados():void{
     
-    this.service.salvarPessoa(this.pessoaForm.value).subscribe(obj=> obj);
+    this.service.salvarPessoa(this.pessoaForm.value).subscribe(obj=> this.errado = false);
     window.location.reload();
   }
 
