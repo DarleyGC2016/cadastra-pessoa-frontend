@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Pessoa } from '../../../shared/model/pessoa.model';
-import { Observable } from 'rxjs';
+import { catchError, delay, first, Observable, of, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CadastroService {
-  url = environment.api
+  private readonly url = environment.api
   constructor(private httpClient: HttpClient) { }
 
   salvarPessoa(pessoa: any): Observable<Pessoa>{
-    return this.httpClient.post<Pessoa>(`${this.url}/cadastro/new`, pessoa);
+    return this.httpClient.post<any>(`${this.url}/new`, pessoa)
+                          .pipe(
+                            first(),
+                            delay(1000),
+                            tap(pessoaNova => console.log("tap pessoa: ",pessoaNova))
+                          );
   }
 }

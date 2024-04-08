@@ -1,8 +1,10 @@
-export interface Pessoa{
-    id?: number,
-    nome?: string,
-    email?: string,
-    senha?: string,
-    confirmarSenha?: string,
-    mensagem: string
+export type Pessoa ={
+    id?: number;
+    nome: string;
+    email: string;
+    senha: string;
+    confirmarSenha: string;
+    mensagem: {
+        descricao:string
+    }
 }

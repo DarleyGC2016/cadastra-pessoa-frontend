@@ -4,7 +4,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import { MyErrorStateMatcher } from './my.error.state.matcher';
 import {MatCardModule} from '@angular/material/card';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 import {
   FormControl,
@@ -16,6 +16,8 @@ import {
 } from '@angular/forms';
 
 import { CadastroService } from './cadastro.service';
+import { Pessoa } from '../../../shared/model/pessoa.model';
+import { EmailComponent } from '../../../shared/componets/email/email.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -26,46 +28,64 @@ import { CadastroService } from './cadastro.service';
             ReactiveFormsModule,
             MatButtonModule,
             MatButtonModule,
-            MatCardModule],
+            MatCardModule,
+            EmailComponent],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
 
 
 export class CadastroComponent implements OnInit{
-  public pessoaForm: any;
-  errado:boolean = true ;
+  pessoaForm: any; 
+  mensagem: string = '';
+  pessoa:any;
   matcher = new MyErrorStateMatcher();
+  cadastrado: boolean = false;
+  emailControl:FormControl = new FormControl('',[Validators.required, Validators.email])
+  erroConexao:boolean = false;
+  listaErro: any[] = []
 
   constructor(private fb: FormBuilder,
               private service: CadastroService){
-                
+                        
   }
 
   ngOnInit(): void {
-    this.pessoaForm = this.fb.group({
-      nome: ['', Validators.required],
-      email: ['', Validators.required],
-      senha: ['', Validators.required],
-      confirmarSenha: ['', Validators.required]
-    })
-    this.verificarServidor();
+      this.pessoaForm = this.fb.group({
+        nome: ['', Validators.required],
+        email: this.emailControl,
+        senha: ['', Validators.required],
+        confirmarSenha: ['', Validators.required]
+      });
+      this.verificarServidor();  
   }
 
   verificarServidor():void{
-    this.service.salvarPessoa(this.pessoaForm.value)
+    this.service.salvarPessoa(this.pessoaForm.valu)
     .pipe(
-            catchError(error =>{              
-              this.errado = error.ok
-               return of([])  
+            catchError(error => {
+              this.erroConexao = error.status === 0? true : false;    
+              return of([]);
             })
-          ).subscribe((obj)=>obj);
+          ).subscribe(obj=>obj);
   }
 
   enviarDados():void{
     
-    this.service.salvarPessoa(this.pessoaForm.value).subscribe(obj=> obj);
-    window.location.reload();
+    this.service
+    .salvarPessoa(this.pessoaForm.value)
+    .subscribe(obj=> { 
+                  if (obj.mensagem.descricao.includes('Erro')) {
+                    this.mensagem = obj.mensagem.descricao;
+                    this.cadastrado = true;    
+                  } else {
+                      this.mensagem = obj.mensagem.descricao;
+                      this.cadastrado = true;    
+                  }
+                  return of([]);
+                });
+    
+    // window.location.reload();
   }
 
 }
