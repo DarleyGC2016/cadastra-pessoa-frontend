@@ -1,5 +1,5 @@
 
-  @if (!errado) {   
+  @if (erroConexao === true) {   
     <mat-card>
       <mat-card-content>
           <mat-error>Servidor fora do ar. Estamos em manutenção!!</mat-error>
@@ -7,16 +7,29 @@
     </mat-card>
   }
   @else {
-    @if (errado) {
-      <form class="example-form" [formGroup]="pessoaForm">
+      @if (cadastrado === true) {   
+        <mat-card>
+          <mat-card-content>
+              <p>{{mensagem}}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+      <form class="example-form" [formGroup]="pessoaForm">        
           <mat-form-field class="example-full-width">
             <mat-label>Nome</mat-label>
               <input type="text" matInput formControlName="nome"  [errorStateMatcher]="matcher" placeholder="Nome" minlength="3" maxlength="50">
               <mat-error>Nome tem que ter entre 3 e 50 letras</mat-error>
           </mat-form-field>
+          <app-email [label]="'E-mail'"
+                    [placeholder]="'Ex.:pat@gmail.com'"
+                    [email]="emailControl"
+                    [erroEmailVazio]="'Insera um email valido'"
+                    [erroEmailValido]="'Email está invalido'"
+                    >
+          </app-email>
           <mat-form-field class="example-full-width">
             <mat-label>Senha</mat-label>
-              <input type="password" matInput name="senha" formControlName="senha"
+              <input type="password" matInput name="senha"   formControlName="senha"
                 [errorStateMatcher]="matcher"
                 placeholder="Senha" minlength="6" maxlength="20">
                 <mat-error>Senha tem que ter entre 6 e 20 letras</mat-error>
@@ -29,20 +42,16 @@
                 <mat-error>Não corresponde com a senha!!</mat-error>
               }
           </mat-form-field>
-          <mat-form-field class="example-full-width">
+          <!-- <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher"
+            <input type="email" matInput [formControl]="emailControl" [errorStateMatcher]="matcher"
                   placeholder="Ex. pat@example.com">
-            @if (pessoaForm.controls.email.status  == "INVALID") {
-              <mat-error>Please enter a valid email address</mat-error>
-            }
-          </mat-form-field>
+          </mat-form-field> -->
           <div class="example-button-row">
             <button mat-raised-button color="primary"
                     (click)="enviarDados()"
                     [disabled]="pessoaForm.status === 'INVALID'">Enviar</button>
           </div>
       </form>
-    }
   }
   
