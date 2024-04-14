@@ -27,26 +27,10 @@
                     [erroEmailValido]="'Email está invalido'"
                     >
           </app-email>
-          <mat-form-field class="example-full-width">
-            <mat-label>Senha</mat-label>
-              <input type="password" matInput name="senha"   formControlName="senha"
-                [errorStateMatcher]="matcher"
-                placeholder="Senha" minlength="6" maxlength="20">
-                <mat-error>Senha tem que ter entre 6 e 20 letras</mat-error>
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <mat-label>Confirmar Senha</mat-label>
-              <input type="password" matInput name="confirmarSenha" formControlName="confirmarSenha"
-                [errorStateMatcher]="matcher" placeholder="Confirmar Senha">        
-              @if (pessoaForm.value.confirmarSenha != pessoaForm.value.senha) {
-                <mat-error>Não corresponde com a senha!!</mat-error>
-              }
-          </mat-form-field>
-          <!-- <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input type="email" matInput [formControl]="emailControl" [errorStateMatcher]="matcher"
-                  placeholder="Ex. pat@example.com">
-          </mat-form-field> -->
+          <comum-comparar-senha
+            [senha]="senhaControl"
+           [confirmarSenha]="confirmaSenhaControl"
+          ></comum-comparar-senha>
           <div class="example-button-row">
             <button mat-raised-button color="primary"
                     (click)="enviarDados()"

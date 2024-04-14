@@ -21,7 +21,7 @@ export class EmailComponent {
   @Input()
   label:string = '';
   @Input()
-  email = new FormControl('', [Validators.required, Validators.email]);
+  email = new FormControl();
   @Input({alias:"erroEmailVazio"})
   erroEmailVazio: string = '';
   @Input({alias:"erroEmailValido"})
@@ -36,6 +36,7 @@ export class EmailComponent {
   }
 
   updateErrorMessage() {
+    
     if (this.email.hasError('required')) {
       this.errorMessage = this.erroEmailVazio;
     } else if (this.email.hasError('email')) {

@@ -1,0 +1,16 @@
+<mat-form-field class="example-full-width">
+    <mat-label>{{label}}</mat-label>
+      <input  type="password"
+              matInput
+              name="senha"
+              placeholder={{placeholder}}
+              [formControl]="senha"
+              (blur)="updateErrorMessage()"
+              minlength={{limiteMin}}
+              maxlength={{limiteMax}}
+              required>
+              
+        @if (senha.invalid) {
+                <mat-error>{{errorMessage}}</mat-error>
+        }
+  </mat-form-field>

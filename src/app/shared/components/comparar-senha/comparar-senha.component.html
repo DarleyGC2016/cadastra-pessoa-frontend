@@ -1,0 +1,24 @@
+    <comum-senha [label]="'Senha'"
+                [placeholder]="'Informe uma senha'"
+                [senha]="senhaControl"
+                [campoValidacao]="'senha'"
+                [errorPasswordEmpty]="'Campo senha está vazio'"
+                [erroPasswordValid]="'Senha tem que ter entre 6 e 20 letras'"
+                [min]="6"
+                [max]="20"
+                ></comum-senha>  
+    <comum-senha [label]="'Confirmar Senha'"
+                [placeholder]="'Informe a confirmação de Senha'"
+                [senha]="confirmaSenhaControl"
+                [campoValidacao]="'senha'"
+                [errorPasswordEmpty]="'Campo senha está vazio'"
+                [erroPasswordValid]="'Senha tem que ter entre 6 e 20 letras'"
+                [min]="6"
+                [max]="20"
+                >
+    </comum-senha>
+    <div class="mensagem">
+        @if (confirmaSenhaControl.value != senhaControl.value) {
+            <mat-error>Não corresponde com a senha!!</mat-error>
+        } 
+    </div>  

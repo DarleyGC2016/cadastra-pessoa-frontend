@@ -4,20 +4,20 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import { MyErrorStateMatcher } from './my.error.state.matcher';
 import {MatCardModule} from '@angular/material/card';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 import {
   FormControl,
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  FormBuilder,
-  FormGroup
+  FormBuilder
 } from '@angular/forms';
 
 import { CadastroService } from './cadastro.service';
-import { Pessoa } from '../../../shared/model/pessoa.model';
-import { EmailComponent } from '../../../shared/componets/email/email.component';
+import { EmailComponent } from '../../../shared/components/email/email.component';
+import { SenhaComponent } from '../../../shared/components/senha/senha.component';
+import { CompararSenhaComponent } from '../../../shared/components/comparar-senha/comparar-senha.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -29,7 +29,9 @@ import { EmailComponent } from '../../../shared/componets/email/email.component'
             MatButtonModule,
             MatButtonModule,
             MatCardModule,
-            EmailComponent],
+            EmailComponent,
+            SenhaComponent,
+            CompararSenhaComponent],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
@@ -41,7 +43,9 @@ export class CadastroComponent implements OnInit{
   pessoa:any;
   matcher = new MyErrorStateMatcher();
   cadastrado: boolean = false;
-  emailControl:FormControl = new FormControl('',[Validators.required, Validators.email])
+  emailControl:FormControl = new FormControl('',[Validators.required, Validators.email]);
+  senhaControl:FormControl = new FormControl('',[Validators.required]);
+  confirmaSenhaControl:FormControl = new FormControl('',[Validators.required]);
   erroConexao:boolean = false;
   listaErro: any[] = []
 
@@ -54,8 +58,8 @@ export class CadastroComponent implements OnInit{
       this.pessoaForm = this.fb.group({
         nome: ['', Validators.required],
         email: this.emailControl,
-        senha: ['', Validators.required],
-        confirmarSenha: ['', Validators.required]
+        senha: this.senhaControl,
+        confirmarSenha: this.confirmaSenhaControl
       });
       this.verificarServidor();  
   }

@@ -1,12 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
 
 @Component({
   selector: 'comum-senha',
   standalone: true,
-  imports: [],
+  imports: [MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule],
   templateUrl: './senha.component.html',
   styleUrl: './senha.component.css'
 })
@@ -16,7 +21,7 @@ export class SenhaComponent {
   @Input()
   label:string = '';
   @Input()
-  senha = new FormControl('', [Validators.required]);
+  senha = new FormControl();
   @Input({alias:"errorPasswordEmpty"})
   erroSenhaVazio: string = '';
   @Input({alias:"erroPasswordValid"})
@@ -39,7 +44,7 @@ export class SenhaComponent {
   updateErrorMessage() {
     if (this.senha.hasError('required')) {
       this.errorMessage = this.erroSenhaVazio;
-    } else if (this.senha.hasError(this.campo)) {
+    } else if (this.senha.hasError('minlength')) {
       this.errorMessage = this.erroSenhaValido;
     } else {
       this.errorMessage = '';
