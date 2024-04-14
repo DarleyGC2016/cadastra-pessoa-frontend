@@ -16,8 +16,8 @@ import {
 
 import { CadastroService } from './cadastro.service';
 import { EmailComponent } from '../../../shared/components/email/email.component';
-import { SenhaComponent } from '../../../shared/components/senha/senha.component';
 import { CompararSenhaComponent } from '../../../shared/components/comparar-senha/comparar-senha.component';
+import { InputTextComponent } from '../../../shared/components/input-text/input-text.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -29,8 +29,8 @@ import { CompararSenhaComponent } from '../../../shared/components/comparar-senh
             MatButtonModule,
             MatButtonModule,
             MatCardModule,
+            InputTextComponent,
             EmailComponent,
-            SenhaComponent,
             CompararSenhaComponent],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'

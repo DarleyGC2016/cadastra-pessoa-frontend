@@ -15,11 +15,14 @@
         </mat-card>
       }
       <form class="example-form" [formGroup]="pessoaForm">        
-          <mat-form-field class="example-full-width">
-            <mat-label>Nome</mat-label>
-              <input type="text" matInput formControlName="nome"  [errorStateMatcher]="matcher" placeholder="Nome" minlength="3" maxlength="50">
-              <mat-error>Nome tem que ter entre 3 e 50 letras</mat-error>
-          </mat-form-field>
+          <comum-input-text
+            [label]="'Nome'"
+            [placeholder]="'Informe o seu nome'"
+            [errorTextEmpty]="'Nome não pode ser vazio!'"
+            [errorTextValid]="'Nome tem que ter entre 3 e 50 letras!!'"
+            [min]="3"
+            [max]="50"
+          ></comum-input-text>
           <app-email [label]="'E-mail'"
                     [placeholder]="'Ex.:pat@gmail.com'"
                     [email]="emailControl"
@@ -29,7 +32,7 @@
           </app-email>
           <comum-comparar-senha
             [senha]="senhaControl"
-           [confirmarSenha]="confirmaSenhaControl"
+            [confirmarSenha]="confirmaSenhaControl"
           ></comum-comparar-senha>
           <div class="example-button-row">
             <button mat-raised-button color="primary"
