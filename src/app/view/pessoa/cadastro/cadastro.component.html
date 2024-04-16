@@ -7,16 +7,17 @@
     </mat-card>
   }
   @else {
-      @if (cadastrado === true) {   
-        <mat-card>
-          <mat-card-content>
-              <p>{{mensagem}}</p>
-          </mat-card-content>
-        </mat-card>
-      }
+    <!-- @if (cadastrado === true){
+    <simple-snack-bar></simple-snack-bar>
+      <app-snack-bar
+        [mensagem]="mensagem"
+        [style]="'success'"
+      ></app-snack-bar>
+    } -->
       <form class="example-form" [formGroup]="pessoaForm">        
           <comum-input-text
             [label]="'Nome'"
+            [texto]="nomeControl"
             [placeholder]="'Informe o seu nome'"
             [errorTextEmpty]="'Nome não pode ser vazio!'"
             [errorTextValid]="'Nome tem que ter entre 3 e 50 letras!!'"
@@ -36,8 +37,11 @@
           ></comum-comparar-senha>
           <div class="example-button-row">
             <button mat-raised-button color="primary"
+                    (click)="enviarDados()" [disabled]="pessoaForm.status === 'INVALID'"
+                    >Enviar</button>
+            <!-- <button mat-raised-button color="primary"
                     (click)="enviarDados()"
-                    [disabled]="pessoaForm.status === 'INVALID'">Enviar</button>
+                    >Enviar</button> -->
           </div>
       </form>
   }

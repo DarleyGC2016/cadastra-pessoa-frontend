@@ -4,7 +4,5 @@ export type Pessoa ={
     email: string;
     senha: string;
     confirmarSenha: string;
-    mensagem: {
-        descricao:string
-    }
+    mensagem: string
 }
