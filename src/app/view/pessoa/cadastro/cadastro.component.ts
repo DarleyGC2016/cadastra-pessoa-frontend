@@ -19,6 +19,7 @@ import { EmailComponent } from '../../../shared/components/email/email.component
 import { CompararSenhaComponent } from '../../../shared/components/comparar-senha/comparar-senha.component';
 import { InputTextComponent } from '../../../shared/components/input-text/input-text.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../../../shared/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -32,7 +33,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
             MatCardModule,
             InputTextComponent,
             EmailComponent,
-            CompararSenhaComponent            
+            CompararSenhaComponent    
           ],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css',
@@ -84,9 +85,10 @@ export class CadastroComponent implements OnInit{
 
   openSnack(descricao:string, estilo:string):void{
     this.mensagem = descricao;
-    this._snackBar.open(this.mensagem,'',{
+    this._snackBar.openFromComponent(SnackBarComponent,{
+      data:{"descricao":this.mensagem,"icone": estilo},
       panelClass:[estilo],
-      duration: 5000
+      duration: 3000
     });
   }
    

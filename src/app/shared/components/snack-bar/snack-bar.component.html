@@ -1,0 +1,15 @@
+
+    @switch (data.icone) {
+        @case ('success') {
+            <span class="circulo" matSnackBarLabel>✅</span>
+        }
+        @case ('info') {
+            <span class="circulo" matSnackBarLabel>⚠️</span>
+        }
+        @default {
+            <span class="circulo" matSnackBarLabel>❌</span>
+        }
+    }
+    <span matSnackBarLabel>
+        {{data.descricao}}
+    </span>
