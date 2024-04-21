@@ -7,19 +7,23 @@
     </mat-card>
   }
   @else {
-      @if (cadastrado === true) {   
-        <mat-card>
-          <mat-card-content>
-              <p>{{mensagem}}</p>
-          </mat-card-content>
-        </mat-card>
-      }
+    <!-- @if (cadastrado === true){
+    <simple-snack-bar></simple-snack-bar>
+      <app-snack-bar
+        [mensagem]="mensagem"
+        [style]="'success'"
+      ></app-snack-bar>
+    } -->
       <form class="example-form" [formGroup]="pessoaForm">        
-          <mat-form-field class="example-full-width">
-            <mat-label>Nome</mat-label>
-              <input type="text" matInput formControlName="nome"  [errorStateMatcher]="matcher" placeholder="Nome" minlength="3" maxlength="50">
-              <mat-error>Nome tem que ter entre 3 e 50 letras</mat-error>
-          </mat-form-field>
+          <comum-input-text
+            [label]="'Nome'"
+            [texto]="nomeControl"
+            [placeholder]="'Informe o seu nome'"
+            [errorTextEmpty]="'Nome não pode ser vazio!'"
+            [errorTextValid]="'Nome tem que ter entre 3 e 50 letras!!'"
+            [min]="3"
+            [max]="50"
+          ></comum-input-text>
           <app-email [label]="'E-mail'"
                     [placeholder]="'Ex.:pat@gmail.com'"
                     [email]="emailControl"
@@ -27,30 +31,17 @@
                     [erroEmailValido]="'Email está invalido'"
                     >
           </app-email>
-          <mat-form-field class="example-full-width">
-            <mat-label>Senha</mat-label>
-              <input type="password" matInput name="senha"   formControlName="senha"
-                [errorStateMatcher]="matcher"
-                placeholder="Senha" minlength="6" maxlength="20">
-                <mat-error>Senha tem que ter entre 6 e 20 letras</mat-error>
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <mat-label>Confirmar Senha</mat-label>
-              <input type="password" matInput name="confirmarSenha" formControlName="confirmarSenha"
-                [errorStateMatcher]="matcher" placeholder="Confirmar Senha">        
-              @if (pessoaForm.value.confirmarSenha != pessoaForm.value.senha) {
-                <mat-error>Não corresponde com a senha!!</mat-error>
-              }
-          </mat-form-field>
-          <!-- <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input type="email" matInput [formControl]="emailControl" [errorStateMatcher]="matcher"
-                  placeholder="Ex. pat@example.com">
-          </mat-form-field> -->
+          <comum-comparar-senha
+            [senha]="senhaControl"
+            [confirmarSenha]="confirmaSenhaControl"
+          ></comum-comparar-senha>
           <div class="example-button-row">
             <button mat-raised-button color="primary"
+                    (click)="enviarDados()" [disabled]="pessoaForm.status === 'INVALID'"
+                    >Enviar</button>
+            <!-- <button mat-raised-button color="primary"
                     (click)="enviarDados()"
-                    [disabled]="pessoaForm.status === 'INVALID'">Enviar</button>
+                    >Enviar</button> -->
           </div>
       </form>
   }

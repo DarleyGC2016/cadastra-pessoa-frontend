@@ -1,23 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import { MyErrorStateMatcher } from './my.error.state.matcher';
 import {MatCardModule} from '@angular/material/card';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 
 import {
   FormControl,
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  FormBuilder,
-  FormGroup
+  FormBuilder
 } from '@angular/forms';
 
 import { CadastroService } from './cadastro.service';
-import { Pessoa } from '../../../shared/model/pessoa.model';
-import { EmailComponent } from '../../../shared/componets/email/email.component';
+import { EmailComponent } from '../../../shared/components/email/email.component';
+import { CompararSenhaComponent } from '../../../shared/components/comparar-senha/comparar-senha.component';
+import { InputTextComponent } from '../../../shared/components/input-text/input-text.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackBarComponent } from '../../../shared/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-cadastro',
@@ -29,35 +31,40 @@ import { EmailComponent } from '../../../shared/componets/email/email.component'
             MatButtonModule,
             MatButtonModule,
             MatCardModule,
-            EmailComponent],
+            InputTextComponent,
+            EmailComponent,
+            CompararSenhaComponent    
+          ],
   templateUrl: './cadastro.component.html',
-  styleUrl: './cadastro.component.css'
+  styleUrl: './cadastro.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 
 
 export class CadastroComponent implements OnInit{
+
   pessoaForm: any; 
   mensagem: string = '';
-  pessoa:any;
-  matcher = new MyErrorStateMatcher();
-  cadastrado: boolean = false;
-  emailControl:FormControl = new FormControl('',[Validators.required, Validators.email])
   erroConexao:boolean = false;
-  listaErro: any[] = []
+
+  nomeControl:FormControl = new FormControl('',[Validators.required]);
+  emailControl:FormControl = new FormControl('',[Validators.required, Validators.email]);
+  senhaControl:FormControl = new FormControl('',[Validators.required]);
+  confirmaSenhaControl:FormControl = new FormControl('',[Validators.required]);
 
   constructor(private fb: FormBuilder,
-              private service: CadastroService){
-                        
+              private service: CadastroService,
+              private _snackBar: MatSnackBar){
   }
 
   ngOnInit(): void {
       this.pessoaForm = this.fb.group({
-        nome: ['', Validators.required],
+        nome: this.nomeControl,
         email: this.emailControl,
-        senha: ['', Validators.required],
-        confirmarSenha: ['', Validators.required]
+        senha: this.senhaControl,
+        confirmarSenha: this.confirmaSenhaControl
       });
-      this.verificarServidor();  
+      this.verificarServidor();
   }
 
   verificarServidor():void{
@@ -71,21 +78,28 @@ export class CadastroComponent implements OnInit{
   }
 
   enviarDados():void{
-    
     this.service
     .salvarPessoa(this.pessoaForm.value)
-    .subscribe(obj=> { 
-                  if (obj.mensagem.descricao.includes('Erro')) {
-                    this.mensagem = obj.mensagem.descricao;
-                    this.cadastrado = true;    
-                  } else {
-                      this.mensagem = obj.mensagem.descricao;
-                      this.cadastrado = true;    
-                  }
-                  return of([]);
-                });
-    
-    // window.location.reload();
+    .subscribe(obj => this.apresentaSnack(obj));
   }
 
+  openSnack(descricao:string, estilo:string):void{
+    this.mensagem = descricao;
+    this._snackBar.openFromComponent(SnackBarComponent,{
+      data:{"descricao":this.mensagem,"icone": estilo},
+      panelClass:[estilo],
+      duration: 3000
+    });
+  }
+   
+  apresentaSnack(obj: any): Observable<any>{
+      if (obj.mensagem.includes('Erro')) {
+        this.openSnack(obj.mensagem,'error');                     
+      } else if (obj.mensagem.includes('Sucesso')){
+          this.openSnack(obj.mensagem,'success');                     
+      } else {
+        this.openSnack(obj.mensagem,'info');
+      }
+      return of([]);
+    }
 }

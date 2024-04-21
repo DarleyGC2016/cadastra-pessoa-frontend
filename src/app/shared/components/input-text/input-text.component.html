@@ -1,0 +1,13 @@
+<mat-form-field class="example-full-width">
+    <mat-label>Nome</mat-label>
+        <input type="text" matInput 
+            placeholder={{placeholder}}
+            [formControl]="texto"
+            (blur)="updateErrorMessage()"
+            minlength={{limiteMin}}
+            maxlength={{limiteMax}}
+            required>
+        @if (texto.invalid) {
+            <mat-error>{{errorMessage}}</mat-error>
+        }
+    </mat-form-field>

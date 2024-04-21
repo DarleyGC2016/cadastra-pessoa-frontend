@@ -12,3 +12,21 @@
     display: table-cell;
     max-width: 600px;
   }
+
+
+  mat-snack-bar-container.success {
+    .mdc-snackbar__surface {
+      background-color: #43a047 !important;
+    }
+  }
+  mat-snack-bar-container.error {
+    .mdc-snackbar__surface {
+      background-color: #d32f2f !important;
+    }
+  }
+
+  mat-snack-bar-container.info {
+    .mdc-snackbar__surface {
+      background-color: #ffd816 !important;
+    }
+  }
