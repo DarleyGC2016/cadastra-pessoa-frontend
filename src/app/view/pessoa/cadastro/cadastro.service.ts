@@ -15,6 +15,7 @@ export class CadastroService {
     return this.httpClient.post<any>(`${this.url}/new`, pessoa)
                           .pipe(
                             first(),
+                            delay(1),
                             tap(pessoaNova => console.log("tap pessoa: ",pessoaNova))
                           );
   }
