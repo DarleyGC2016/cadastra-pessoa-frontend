@@ -67,19 +67,22 @@ export class CadastroComponent implements OnInit{
       this.verificarServidor();
   }
 
+
   verificarServidor():void{
     this.service.salvarPessoa(this.pessoaForm.valu)
-    .pipe(
-            catchError(error => {
-              this.erroConexao = error.status === 0? true : false;    
-              return of([]);
-            })
-          ).subscribe(obj=>obj);
+    .pipe(catchError(error => {
+      this.erroConexao = error.status === 0? true : false;    
+      return of([]);
+    })).subscribe(obj=>obj);
   }
 
   enviarDados():void{
     this.service
     .salvarPessoa(this.pessoaForm.value)
+    .pipe(catchError(error => {
+      this.erroConexao = error.status === 0? true : false;    
+      return of([]);
+    }))
     .subscribe(obj => this.apresentaSnack(obj));
   }
 
@@ -96,7 +99,7 @@ export class CadastroComponent implements OnInit{
       if (obj.mensagem.includes('Erro')) {
         this.openSnack(obj.mensagem,'error');                     
       } else if (obj.mensagem.includes('Sucesso')){
-          this.openSnack(obj.mensagem,'success');                     
+          this.openSnack(obj.mensagem,'success');         
       } else {
         this.openSnack(obj.mensagem,'info');
       }
