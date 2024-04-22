@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmailComponent } from './email.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EmailComponent', () => {
   let component: EmailComponent;
@@ -8,7 +9,7 @@ describe('EmailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EmailComponent]
+      imports: [EmailComponent, NoopAnimationsModule]
     })
     .compileComponents();
     

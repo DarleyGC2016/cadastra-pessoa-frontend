@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SenhaComponent } from './senha.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SenhaComponent', () => {
   let component: SenhaComponent;
@@ -8,7 +9,7 @@ describe('SenhaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SenhaComponent]
+      imports: [SenhaComponent, NoopAnimationsModule]
     })
     .compileComponents();
     

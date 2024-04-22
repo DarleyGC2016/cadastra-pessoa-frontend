@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompararSenhaComponent } from './comparar-senha.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CompararSenhaComponent', () => {
   let component: CompararSenhaComponent;
@@ -8,7 +9,7 @@ describe('CompararSenhaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CompararSenhaComponent]
+      imports: [CompararSenhaComponent, NoopAnimationsModule]
     })
     .compileComponents();
     

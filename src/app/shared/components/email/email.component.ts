@@ -1,7 +1,7 @@
-import { Component, input, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
